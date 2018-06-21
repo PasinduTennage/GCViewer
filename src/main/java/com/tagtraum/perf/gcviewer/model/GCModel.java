@@ -359,6 +359,16 @@ public class GCModel implements Serializable {
     }
 
     /**
+     * Returns number of garbage collection events (without full gcs / vm operations).
+     *
+     * @return number of all gc events (without full gcs).
+     */
+    public int getNumGCEvents() {
+        return gcEvents.size();
+    }
+
+
+    /**
      * Returns an iterator to all vm operation events.
      *
      * @return iterator to all vm operation events
@@ -393,6 +403,17 @@ public class GCModel implements Serializable {
     public Iterator<GCEvent> getFullGCEvents() {
         return fullGCEvents.iterator();
     }
+
+    /**
+     * Returns an number of full gc events.
+     *
+     * @return number of full gc events
+     */
+    public int getNumOfFullGCEvents() {
+        return fullGCEvents.size();
+    }
+
+
 
     private DoubleData getDoubleData(String key, Map<String, DoubleData> eventMap) {
         DoubleData data = eventMap.get(key);

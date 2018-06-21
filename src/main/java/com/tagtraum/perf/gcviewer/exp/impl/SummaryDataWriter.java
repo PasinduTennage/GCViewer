@@ -14,6 +14,8 @@ import com.tagtraum.perf.gcviewer.util.FormattedValue;
 import com.tagtraum.perf.gcviewer.util.MemoryFormat;
 import com.tagtraum.perf.gcviewer.util.TimeFormat;
 
+import javax.swing.text.NumberFormatter;
+
 /**
  * SummaryDataWriter writes a csv-file of quite a few parameters of the {@link GCModel} class.
  * <p>
@@ -31,6 +33,8 @@ public class SummaryDataWriter extends AbstractDataWriter {
      * field formatters
      */
     private NumberFormat pauseFormatter;
+    private NumberFormat numberFormatter;
+
     private MemoryFormat footprintSlopeFormatter;
     private NumberFormat percentFormatter;
     private NumberFormat gcTimeFormatter;
@@ -78,6 +82,10 @@ public class SummaryDataWriter extends AbstractDataWriter {
 
         throughputFormatter = NumberFormat.getInstance();
         throughputFormatter.setMaximumFractionDigits(2);
+
+        numberFormatter = NumberFormat.getInstance();
+        numberFormatter.setMaximumFractionDigits(0);
+
 
         footprintFormatter = new MemoryFormat();
 
@@ -147,6 +155,10 @@ public class SummaryDataWriter extends AbstractDataWriter {
             exportValue(out, "throughput", throughputFormatter.format(model.getThroughput()), "%");
             formed = totalTimeFormatter.formatToFormatted(new Date((long)model.getRunningTime()*1000l));
             exportValue(out, "totalTime", formed.getValue(), formed.getUnits());
+
+            exportValue(out, "Number of full GC", numberFormatter.format(model.getNumOfFullGCEvents()), "");
+            exportValue(out, "Number of Minor GC", numberFormatter.format(model.getNumGCEvents()), "");
+
 
             formed = freedMemoryPerMinFormatter.formatToFormatted(model.getFreedMemory()/model.getRunningTime()*60.0);
             exportValue(out, "freedMemoryPerMin", formed.getValue(), formed.getUnits() + "/min");
